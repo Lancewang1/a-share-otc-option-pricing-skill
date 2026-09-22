@@ -1,0 +1,4 @@
+interface:
+  display_name: "A-Share OTC Option Pricing"
+  short_description: "Explain and demo auditable A-share OTC option pricing"
+  default_prompt: "Use $a-share-otc-option-pricing to explain or demonstrate an A-share OTC equity option quote."
