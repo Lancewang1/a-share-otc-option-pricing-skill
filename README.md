@@ -4,6 +4,8 @@ A Codex skill and transparent demo for explaining and sanity-checking indicative
 
 这是一个可直接使用的 Codex Skill 和透明定价 demo，用来解释、演示和检查 A 股场外个股期权的 indicative 报价。中文逐步说明见 [references/pricing-workflow.zh-CN.md](references/pricing-workflow.zh-CN.md)。
 
+![Interactive pricing demo](demo-desktop.png)
+
 The source material describes a larger dealer-style system with volatility-surface construction, a conditional-volatility engine, an ML challenger, local-volatility/Monte Carlo components, cross-currency settlement, Greeks, and a commercial quote waterfall. This public package keeps the reusable methodology and an inspectable vanilla-option demo. It intentionally excludes proprietary observations, per-stock calibrations, trained weights, and internal research artifacts.
 
 ## What it does
