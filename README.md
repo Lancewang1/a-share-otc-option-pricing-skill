@@ -4,7 +4,14 @@ A Codex skill and transparent demo for explaining and sanity-checking indicative
 
 这是一个可直接使用的 Codex Skill 和透明定价 demo，用来解释、演示和检查 A 股场外个股期权的 indicative 报价。中文逐步说明见 [references/pricing-workflow.zh-CN.md](references/pricing-workflow.zh-CN.md)。
 
-![Interactive pricing demo](demo-desktop.png)
+![Full original dealer-style pricing demo](demo-full.png)
+
+## Online demos
+
+- **Full original dealer-style demo:** [GitHub Pages](https://lancewang1.github.io/a-share-otc-option-pricing-skill/)
+- **Simplified transparent demo:** [simple.html](https://lancewang1.github.io/a-share-otc-option-pricing-skill/simple.html)
+
+The full demo is published with the repository owner's explicit authorization. It contains embedded per-stock derived data and model parameters from the supplied original HTML and remains `INDICATIVE`.
 
 The source material describes a larger dealer-style system with volatility-surface construction, a conditional-volatility engine, an ML challenger, local-volatility/Monte Carlo components, cross-currency settlement, Greeks, and a commercial quote waterfall. This public package keeps the reusable methodology and an inspectable vanilla-option demo. It intentionally excludes proprietary observations, per-stock calibrations, trained weights, and internal research artifacts.
 

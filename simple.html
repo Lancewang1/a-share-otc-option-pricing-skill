@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A-Share OTC Option Pricing Demo</title>
+<style>
+:root{--bg:#f3f5f7;--panel:#fff;--ink:#17202a;--muted:#68727d;--line:#d9dee3;--green:#087f5b;--red:#c92a2a;--blue:#1864ab;--amber:#d97706;--soft:#eef2f5}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif;letter-spacing:0}header{height:58px;background:#1d252c;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:3px solid var(--green)}header h1{font-size:17px;margin:0;font-weight:650}header span{font:12px ui-monospace,SFMono-Regular,Consolas,monospace;color:#b8c2ca}.shell{max-width:1440px;margin:0 auto;padding:18px 20px 28px}.status{display:flex;align-items:center;gap:10px;margin-bottom:14px}.badge{font-size:11px;font-weight:700;color:#805b10;background:#fff3bf;border:1px solid #ffe066;padding:3px 7px;border-radius:3px}.status p{margin:0;color:var(--muted);font-size:12px}.grid{display:grid;grid-template-columns:minmax(300px,380px) minmax(0,1fr);gap:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:6px}.panel h2{font-size:13px;margin:0;padding:12px 14px;border-bottom:1px solid var(--line);text-transform:uppercase;color:#3d4852}.form{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:11px 10px}.field{min-width:0}.field.wide{grid-column:1/-1}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}.field input,.field select{width:100%;height:35px;border:1px solid #bcc5ce;border-radius:4px;background:#fff;color:var(--ink);padding:0 9px;font:13px ui-monospace,SFMono-Regular,Consolas,monospace}.field input:focus,.field select:focus{outline:2px solid #a5d8ff;outline-offset:1px;border-color:var(--blue)}.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;border:1px solid #bcc5ce;border-radius:4px;overflow:hidden}.seg button{height:34px;border:0;border-right:1px solid #bcc5ce;background:#fff;color:#45515c;cursor:pointer}.seg button:last-child{border-right:0}.seg button.on{background:#1d252c;color:#fff}.action{grid-column:1/-1;height:38px;border:0;border-radius:4px;background:var(--green);color:white;font-weight:700;cursor:pointer}.error{grid-column:1/-1;color:var(--red);font-size:12px;min-height:18px}.right{display:grid;grid-template-rows:auto auto;gap:14px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line)}.metric{padding:13px;border-right:1px solid var(--line);min-width:0}.metric:last-child{border-right:0}.metric small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase}.metric strong{display:block;margin-top:4px;font:600 20px ui-monospace,SFMono-Regular,Consolas,monospace;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.metric.primary strong{color:var(--green)}.detail{display:grid;grid-template-columns:1fr 1fr}.table{width:100%;border-collapse:collapse}.table th,.table td{padding:8px 13px;border-bottom:1px solid #edf0f2;text-align:left}.table th{color:var(--muted);font-size:11px;font-weight:500}.table td:last-child{text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.charts{display:grid;grid-template-columns:1.1fr .9fr;gap:0}.chart{padding:13px;min-width:0}.chart:first-child{border-right:1px solid var(--line)}.chart h3{font-size:12px;margin:0 0 10px;color:#46515b}canvas{width:100%;height:210px;display:block}.bars{height:210px;display:flex;flex-direction:column;justify-content:center;gap:8px}.bar-row{display:grid;grid-template-columns:90px minmax(0,1fr) 74px;align-items:center;gap:8px;font-size:11px}.track{height:12px;background:var(--soft);position:relative}.fill{height:100%;background:var(--blue);min-width:1px}.bar-row.total .fill{background:var(--green)}.bar-row span:last-child{text-align:right;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.foot{padding:10px 13px;color:var(--muted);font-size:11px;border-top:1px solid var(--line)}.ok{color:var(--green)}.bad{color:var(--red)}
+@media(max-width:900px){header{padding:0 14px}.shell{padding:12px}.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.detail,.charts{grid-template-columns:1fr}.chart:first-child{border-right:0;border-bottom:1px solid var(--line)}}
+@media(max-width:700px){body{overflow-x:hidden}header span{display:none}.status{align-items:flex-start}.status p{white-space:normal}.form{grid-template-columns:1fr}.field.wide,.action,.error{grid-column:auto}.metric strong{font-size:16px}.bar-row{grid-template-columns:74px minmax(0,1fr) 64px}}
+</style>
+</head>
+<body>
+<header><h1>A-Share OTC Option Pricer</h1><span>TRANSPARENT VANILLA CORE</span></header>
+<main class="shell">
+  <div class="status"><span class="badge">INDICATIVE</span><p>User-supplied assumptions · European vanilla · no live market data</p></div>
+  <div class="grid">
+    <section class="panel">
+      <h2>Trade and market inputs</h2>
+      <div class="form">
+        <div class="field"><label for="spot">Spot</label><input id="spot" type="number" value="100" step="0.01"></div>
+        <div class="field"><label for="strike">Strike</label><input id="strike" type="number" value="100" step="0.01"></div>
+        <div class="field"><label for="days">Days to expiry</label><input id="days" type="number" value="90" step="1"></div>
+        <div class="field"><label for="notional">Equity notional</label><input id="notional" type="number" value="1000000" step="10000"></div>
+        <div class="field wide"><label>Option type</label><div class="seg" id="kind"><button class="on" data-value="call">Call</button><button data-value="put">Put</button></div></div>
+        <div class="field"><label for="rate">CNY rate (%)</label><input id="rate" type="number" value="1.8" step="0.1"></div>
+        <div class="field"><label for="borrow">Borrow (bp p.a.)</label><input id="borrow" type="number" value="300" step="10"></div>
+        <div class="field"><label for="dividend">Cash dividend/share</label><input id="dividend" type="number" value="0.8" step="0.05"></div>
+        <div class="field"><label for="divday">Dividend day</label><input id="divday" type="number" value="45" step="1"></div>
+        <div class="field"><label for="vol">Equity vol (%)</label><input id="vol" type="number" value="28" step="0.5"></div>
+        <div class="field"><label for="settlement">Settlement</label><select id="settlement"><option value="local">Local CNY</option><option value="quanto">Quanto</option><option value="composite">Composite</option></select></div>
+        <div class="field"><label for="fxvol">FX vol (%)</label><input id="fxvol" type="number" value="6" step="0.5"></div>
+        <div class="field"><label for="corr">Corr(S, quote/CCY)</label><input id="corr" type="number" value="-0.2" step="0.05"></div>
+        <div class="field"><label for="hedge">Hedge reserve (bp)</label><input id="hedge" type="number" value="8" step="1"></div>
+        <div class="field"><label for="spread">Half spread (vol pts)</label><input id="spread" type="number" value="1" step="0.25"></div>
+        <button class="action" id="calculate">Recalculate</button>
+        <div class="error" id="error"></div>
+      </div>
+    </section>
+    <div class="right">
+      <section class="panel">
+        <div class="metrics">
+          <div class="metric primary"><small>Client buy quote</small><strong id="quote">—</strong></div>
+          <div class="metric"><small>Premium</small><strong id="premium">—</strong></div>
+          <div class="metric"><small>Theoretical/share</small><strong id="price">—</strong></div>
+          <div class="metric"><small>Local forward</small><strong id="forward">—</strong></div>
+        </div>
+        <div class="detail">
+          <table class="table"><tbody>
+            <tr><th>Dividend PV</th><td id="pvdiv">—</td></tr><tr><th>Implied carry q0</th><td id="carry">—</td></tr>
+            <tr><th>Pricing volatility</th><td id="pvol">—</td></tr><tr><th>Quanto drift</th><td id="qdrift">—</td></tr>
+          </tbody></table>
+          <table class="table"><tbody>
+            <tr><th>Delta</th><td id="delta">—</td></tr><tr><th>Gamma</th><td id="gamma">—</td></tr>
+            <tr><th>Vega / 1 vol pt</th><td id="vega">—</td></tr><tr><th>Theta / day</th><td id="theta">—</td></tr>
+          </tbody></table>
+        </div>
+        <div class="foot">Put-call parity: <span id="parity">—</span></div>
+      </section>
+      <section class="panel charts">
+        <div class="chart"><h3>Expiry payoff and premium</h3><canvas id="payoff" width="640" height="230"></canvas></div>
+        <div class="chart"><h3>Client quote waterfall</h3><div class="bars" id="bars"></div></div>
+      </section>
+    </div>
+  </div>
+</main>
+<script>
+const ids={};for(const id of ['spot','strike','days','notional','rate','borrow','dividend','divday','vol','settlement','fxvol','corr','hedge','spread'])ids[id]=document.getElementById(id);
+let kind='call';document.querySelectorAll('#kind button').forEach(b=>b.onclick=()=>{kind=b.dataset.value;document.querySelectorAll('#kind button').forEach(x=>x.classList.toggle('on',x===b));calc()});
+const cdf=x=>.5*(1+erf(x/Math.sqrt(2))),pdf=x=>Math.exp(-x*x/2)/Math.sqrt(2*Math.PI);
+function erf(x){const s=x<0?-1:1,a=Math.abs(x),t=1/(1+.3275911*a);return s*(1-(((((1.061405429*t-1.453152027)*t+1.421413741)*t-.284496736)*t+.254829592)*t)*Math.exp(-a*a))}
+function bs(S,K,T,r,q,v,cp){const rt=Math.sqrt(T),d1=(Math.log(S/K)+(r-q+v*v/2)*T)/(v*rt),d2=d1-v*rt,dq=Math.exp(-q*T),dr=Math.exp(-r*T),c=cp==='call'?1:-1,p=c*(S*dq*cdf(c*d1)-K*dr*cdf(c*d2));return{p,d:c*dq*cdf(c*d1),g:dq*pdf(d1)/(S*v*rt),vega:S*dq*pdf(d1)*rt/100,theta:(-S*dq*pdf(d1)*v/(2*rt)-c*r*K*dr*cdf(c*d2)+c*q*S*dq*cdf(c*d1))/365}}
+const n=id=>Number(ids[id].value),pct=x=>(100*x).toFixed(3)+'%',num=(x,d=4)=>x.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+function calc(){try{const S=n('spot'),K=n('strike'),days=n('days'),T=days/365,r=n('rate')/100,v=n('vol')/100,fx=n('fxvol')/100,rho=n('corr'),div=n('dividend'),dd=n('divday');if(!(S>0&&K>0&&T>0&&v>0&&Math.abs(rho)<=1))throw Error('Check positive spot, strike, expiry and volatility; correlation must be between -1 and 1.');const pv=dd<=days?div*Math.exp(-r*dd/365):0;if(pv>=S)throw Error('Dividend PV must be below spot.');const F=(S-pv)*Math.exp((r-n('borrow')/1e4)*T),q=r-Math.log(F/S)/T,st=ids.settlement.value;let rp=r,vp=v,qa=0;if(st==='quanto'){qa=-rho*v*fx;rp+=qa}else if(st==='composite'){const vv=v*v+fx*fx+2*rho*v*fx;if(vv<=0)throw Error('Composite variance must be positive.');vp=Math.sqrt(vv)}const g=bs(S,K,T,rp,q,vp,kind),theo=g.p/S,hedge=n('hedge')/1e4,credit=35/1e4*T,capital=25/1e4*T,sp=n('spread')*g.vega/S,quote=theo+hedge+credit+capital+sp,premium=quote*n('notional'),C=bs(S,K,T,rp,q,vp,'call').p,P=bs(S,K,T,rp,q,vp,'put').p,err=(C-P)-(S*Math.exp(-q*T)-K*Math.exp(-rp*T));const out={quote:pct(quote),premium:num(premium,2),price:num(g.p,4),forward:num(F,4),pvdiv:num(pv,4),carry:pct(q),pvol:pct(vp),qdrift:(qa*1e4).toFixed(1)+' bp',delta:num(g.d,5),gamma:num(g.g,6),vega:num(g.vega,5),theta:num(g.theta,5)};for(const [k,val] of Object.entries(out))document.getElementById(k).textContent=val;const pe=document.getElementById('parity');pe.textContent=Math.abs(err)<1e-7?'PASS · error '+err.toExponential(2):'FAIL · error '+err.toExponential(2);pe.className=Math.abs(err)<1e-7?'ok':'bad';drawPayoff(S,K,premium/n('notional')*S,kind);drawBars([{n:'Theoretical',v:theo},{n:'Hedge',v:hedge},{n:'Credit',v:credit},{n:'Capital',v:capital},{n:'Half spread',v:sp},{n:'Total',v:quote,total:1}]);document.getElementById('error').textContent=''}catch(e){document.getElementById('error').textContent=e.message}}
+function drawBars(a){const mx=Math.max(...a.map(x=>x.v));document.getElementById('bars').innerHTML=a.map(x=>`<div class="bar-row ${x.total?'total':''}"><span>${x.n}</span><div class="track"><div class="fill" style="width:${100*x.v/mx}%"></div></div><span>${pct(x.v)}</span></div>`).join('')}
+function drawPayoff(S,K,prem,cp){const c=document.getElementById('payoff'),x=c.getContext('2d'),w=c.width,h=c.height,p=36;x.clearRect(0,0,w,h);x.strokeStyle='#d9dee3';x.lineWidth=1;for(let i=0;i<5;i++){const y=p+i*(h-2*p)/4;x.beginPath();x.moveTo(p,y);x.lineTo(w-p,y);x.stroke()}const lo=.55*S,hi=1.45*S,vals=[];for(let i=0;i<=100;i++){const st=lo+(hi-lo)*i/100,pl=(cp==='call'?Math.max(st-K,0):Math.max(K-st,0))-prem;vals.push([st,pl])}const ay=Math.max(...vals.map(v=>Math.abs(v[1])),1),xp=st=>p+(st-lo)/(hi-lo)*(w-2*p),yp=v=>h/2-v/ay*(h/2-p);x.strokeStyle='#89939c';x.beginPath();x.moveTo(p,h/2);x.lineTo(w-p,h/2);x.stroke();x.strokeStyle='#087f5b';x.lineWidth=3;x.beginPath();vals.forEach((v,i)=>i?x.lineTo(xp(v[0]),yp(v[1])):x.moveTo(xp(v[0]),yp(v[1])));x.stroke();x.fillStyle='#68727d';x.font='12px Segoe UI';x.fillText(lo.toFixed(0),p,h-8);x.fillText('Expiry spot',w/2-28,h-8);x.fillText(hi.toFixed(0),w-p-20,h-8)}
+document.getElementById('calculate').onclick=calc;document.querySelectorAll('input,select').forEach(e=>e.addEventListener('change',calc));calc();
+</script>
+</body>
+</html>
